@@ -1,5 +1,6 @@
 ﻿#include <vector>
 #include <iostream>
+#include <chrono>
 using namespace std;
 const short int undefined = -1;
 
@@ -14,18 +15,26 @@ void filling_mass(vector <int>& mass, int len)
 
 int line_search(vector<int>& mass, int search)
 {
+    auto begin = std::chrono::steady_clock::now();
     for (int i = 0; i < mass.size(); i++)
     {
         if (mass[i] == search)
         {
+            auto end = std::chrono::steady_clock::now();
+            auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+            cout << "Время выполнения поиска: " << elapsed_ms.count() << endl;
             return (i);
         }
     }
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    cout << "Время выполнения поиска: " << elapsed_ms.count() << endl;
     return (undefined);
 }
 
 int binare_search(vector<int>& mass, int search) 
 {
+    auto begin = std::chrono::steady_clock::now();
     int middle_index;
     int left = 0;
     int right = mass.size() - 1;
@@ -34,6 +43,9 @@ int binare_search(vector<int>& mass, int search)
         middle_index = (left + right) / 2;
         if (mass[middle_index] == search)
         {
+            auto end = std::chrono::steady_clock::now();
+            auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+            cout << "Время выполнения поиска: " << elapsed_ms.count() << endl;
             return(middle_index);
         }
         if (mass[middle_index] < search)
@@ -45,11 +57,15 @@ int binare_search(vector<int>& mass, int search)
             right = middle_index - 1;
         }
     }
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    cout << "Время выполнения поиска: " << elapsed_ms.count() << endl;
     return (undefined);
 }
 
 int ternary_search(vector<int>& mass, int search)
 {
+    auto begin = std::chrono::steady_clock::now();
     int middle_index_1;
     int middle_index_2;
     int left = 0;
@@ -61,11 +77,17 @@ int ternary_search(vector<int>& mass, int search)
 
         if (mass[middle_index_1] == search) 
         {
+            auto end = std::chrono::steady_clock::now();
+            auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+            cout << "Время выполнения поиска: " << elapsed_ms.count() << endl;
             return (middle_index_1);
         }
 
         if (mass[middle_index_2] == search) 
         {
+            auto end = std::chrono::steady_clock::now();
+            auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+            cout << "Время выполнения поиска: " << elapsed_ms.count() << endl;
             return (middle_index_2);
         }
 
@@ -78,17 +100,22 @@ int ternary_search(vector<int>& mass, int search)
         {
             left = middle_index_2 + 1;
         }
+
         else 
         {
             left = middle_index_1 + 1;
             right = middle_index_2 - 1;
         }
     }
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    cout << "Время выполнения поиска: " << elapsed_ms.count() << endl;
     return(undefined);
 }
 
 int interpolation_search(vector <int>& mass, int search)
 {
+    auto begin = std::chrono::steady_clock::now();
     int search_index;
     int left = 0;
     int right = mass.size() - 1;
@@ -98,6 +125,9 @@ int interpolation_search(vector <int>& mass, int search)
 
         if (mass[search_index] == search)
         {
+            auto end = std::chrono::steady_clock::now();
+            auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+            cout << "Время выполнения поиска: " << elapsed_ms.count() << endl;
             return (search_index);
         }
 
@@ -111,6 +141,9 @@ int interpolation_search(vector <int>& mass, int search)
             right = search_index - 1;
         }
     }
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    cout << "Время выполнения поиска: " << elapsed_ms.count() << endl;
     return (undefined);
 }
 
@@ -120,7 +153,8 @@ void regroup_search_algoritm(vector <int> mass, int command, int search)
     int index;
     switch (command)
     {
-    case(1):index = line_search(mass, search);
+    case(1):
+        index = line_search(mass, search);
         if (index >= 0)
         {
             cout << "Найденный элемент: " << mass[index] << "|его индекс: " << index << endl;
@@ -130,7 +164,9 @@ void regroup_search_algoritm(vector <int> mass, int command, int search)
             cout << "Элемент не найден" << endl;
         }
         break;
-    case(2):index = binare_search(mass, search);
+
+    case(2):
+        index = binare_search(mass, search);
         if (index >= 0)
         {
             cout << "Найденный элемент: " << mass[index] << "|его индекс: " << index << endl;
@@ -140,7 +176,9 @@ void regroup_search_algoritm(vector <int> mass, int command, int search)
             cout << "Элемент не найден" << endl;
         }
         break;
-    case(3):index = ternary_search(mass, search);
+
+    case(3):
+        index = ternary_search(mass, search);
         if (index >= 0)
         {
             cout << "Найденный элемент: " << mass[index] << "|его индекс: " << index << endl;
@@ -150,7 +188,9 @@ void regroup_search_algoritm(vector <int> mass, int command, int search)
             cout << "Элемент не найден" << endl;
         }
         break;
-    case(4):index = interpolation_search(mass, search);
+
+    case(4):
+        index = interpolation_search(mass, search);
         if (index >= 0)
         {
             cout << "Найденный элемент: " << mass[index] << "|его индекс: " << index << endl;
