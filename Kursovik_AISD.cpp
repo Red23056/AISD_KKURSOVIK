@@ -50,37 +50,68 @@ int binare_search(vector<int>& mass, int search)
 
 int ternary_search(vector<int>& mass, int search)
 {
-    int right = mass.size() - 1;
+    int middle_index_1;
+    int middle_index_2;
     int left = 0;
-    while (right >= left) {
-        int middle_1 = left + (right - left) / 3;
-        int middle_2 = right - (right - left) / 3;
+    int right = mass.size() - 1;
+    while (right >= left) 
+    {
+        middle_index_1 = left + (right - left) / 3;
+        middle_index_2 = right - (right - left) / 3;
 
-        if (mass[middle_1] == search) 
+        if (mass[middle_index_1] == search) 
         {
-            return (middle_1);
+            return (middle_index_1);
         }
 
-        if (mass[middle_2] == search) 
+        if (mass[middle_index_2] == search) 
         {
-            return (middle_2);
+            return (middle_index_2);
         }
 
-        if (search < mass[middle_1]) 
+        if (search < mass[middle_index_1]) 
         {
-            right = middle_1 - 1;
+            right = middle_index_1 - 1;
         }
 
-        else if (search > mass[middle_2]) 
+        else if (search > mass[middle_index_2]) 
         {
-            left = middle_2 + 1;
+            left = middle_index_2 + 1;
         }
         else 
         {
-            left = middle_1 + 1;
-            right = middle_2 - 1;
+            left = middle_index_1 + 1;
+            right = middle_index_2 - 1;
         }
     }
+    return(undefined);
+}
+
+int interpolation_search(vector <int>& mass, int search)
+{
+    int search_index;
+    int left = 0;
+    int right = mass.size() - 1;
+    while (right >= left)
+    {
+        search_index = left + (((double)(right - left) / (mass[right] - mass[left])) * (search - mass[left]));
+
+        if (mass[search_index] == search)
+        {
+            return (search_index);
+        }
+
+        if (mass[search_index] < search)
+        {
+            left = search_index + 1;
+        }
+
+        if (mass[search_index] > search)
+        {
+            right = search_index - 1;
+        }
+    }
+    return (undefined);
 }
 
 
@@ -109,6 +140,26 @@ void regroup_search_algoritm(vector <int> mass, int command, int search)
             cout << "Элемент не найден" << endl;
         }
         break;
+    case(3):index = ternary_search(mass, search);
+        if (index >= 0)
+        {
+            cout << "Найденный элемент: " << mass[index] << "|его индекс: " << index << endl;
+        }
+        else
+        {
+            cout << "Элемент не найден" << endl;
+        }
+        break;
+    case(4):index = interpolation_search(mass, search);
+        if (index >= 0)
+        {
+            cout << "Найденный элемент: " << mass[index] << "|его индекс: " << index << endl;
+        }
+        else
+        {
+            cout << "Элемент не найден" << endl;
+        }
+        break;
     }
 }
 
@@ -118,11 +169,12 @@ int main()
     int search;
     vector <int> mass;
     setlocale(LC_ALL, "RU");
-    cout << "Выберите алгоритм поиска" << endl << "1 - Линейный" << endl << "2 - Бинарный" << endl;
+    cout << "Выберите алгоритм поиска" << endl << "1 - Линейный" << endl << "2 - Бинарный" << endl
+        << "3 - Тернарный" << endl << "4 - Интерполяционный" << endl;
     cin >> command;
     for (int i = 10000; i <= 100000; i += 10000)
     {
-        search = i - 1;
+        search = i/2;
         //search = i / 2;
         filling_mass(mass, i);
         regroup_search_algoritm(mass, command, search);
